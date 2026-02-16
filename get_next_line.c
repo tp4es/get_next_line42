@@ -15,7 +15,6 @@
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	char		*nstash;
 	char		*line;
 	char		*temp[BUFFER_SIZE + 1];
 	ssize_t		bytes;
@@ -29,32 +28,9 @@ char	*get_next_line(int fd)
 	if (bytes == 0 && stash == NULL)
 		return (NULL);
 	else if (bytes == 0 && stash != NULL)
+		return ();
+	while ()
 	{
-		//Imprime lo que quede en stash
-		//Liberar stash
 	}
-	temp[bytes] = '\0';
-	if (!stash)
-	{
-		stash = malloc(bytes + 1);
-		if (!stash)
-			return (NULL);
-		strcpy(stash, temp);
-	}
-	else
-	{
-		stash_len = strlen(stash);
-		nstash = malloc(stash_len + bytes + 1);
-		if (!nstash)
-			return (NULL);
-		memcpy(nstash, stash, stash_len);
-		memcpy(nstash + stash_len, temp, bytes);
-		nstash[stash_len + bytes] = '\0';
-		free(stash);
-		stash = nstash;
-	}
-//Imprimir line
-//Almacenar el resto en buffer
-//Liberar buffer
 	return (line);
 }

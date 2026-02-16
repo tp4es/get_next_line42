@@ -11,6 +11,30 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+//stream_line genera el stash y llama funciones
+void    stream_lines(char **stash, char *temp, ssize_t bytes)
+{
+    if (!*stash)
+	{
+		*stash = malloc(bytes + 1);
+		if (!*stash)
+			return ;
+
+		strcpy(*stash, temp);
+	}
+	else
+	{
+		stash_len = strlen(*stash);
+		nstash = malloc(stash_len + bytes + 1);
+		if (!nstash)
+			return ;
+		memcpy(nstash, *stash, stash_len);
+		memcpy(nstash + stash_len, temp, bytes);
+		nstash[stash_len + bytes] = '\0';
+		free(*stash);
+		*stash = nstash;
+	}
+}
 
 void    is_line(char *stash, size_t stash_size, char *line)
 {
@@ -28,7 +52,7 @@ void    is_line(char *stash, size_t stash_size, char *line)
     }
 }
 
-void extract_line(char **stash, char **line, size_t stash_size, size_t line_size)
+char *extract_line(char **stash, char **line, size_t stash_size, size_t line_size)
 {
     char    *temp;
     size_t  rest_len;
@@ -46,6 +70,7 @@ void extract_line(char **stash, char **line, size_t stash_size, size_t line_size
     temp[rest_len] = '\0';
     free(*stash);
     *stash = temp;
+    return (*line);
 }
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
