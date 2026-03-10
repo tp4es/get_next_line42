@@ -15,22 +15,20 @@
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	char		*line;
-	char		*temp[BUFFER_SIZE + 1];
+	char		temp[BUFFER_SIZE + 1];
 	ssize_t		bytes;
-	size_t		stash_len;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	bytes = read(fd, temp, BUFFER_SIZE);
-	if (bytes < 0)
-		return (NULL);
-	if (bytes == 0 && stash == NULL)
-		return (NULL);
-	else if (bytes == 0 && stash != NULL)
-		return ();
-	while ()
+	while (!stash || !ft_strchr(stash, '\n'))
 	{
+		bytes = read(fd, temp, BUFFER_SIZE);
+		if (bytes <= 0)
+			break;
+		temp[bytes] = '\0';
+		stream_stash(&stash, temp, bytes);
 	}
-	return (line);
+	if (!stash)
+		return (NULL);
+	return (ft_extract_line(&stash, NULL, ft_strlen(stash)));
 }

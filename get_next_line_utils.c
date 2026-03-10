@@ -1,123 +1,158 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tide-oli <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tide.oli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/13 22:00:48 by tide-oli          #+#    #+#             */
-/*   Updated: 2026/02/13 22:00:48 by tide-oli         ###   ########.fr       */
+/*   Created: 2026/03/10 13:51:53 by tide.oli          #+#    #+#             */
+/*   Updated: 2026/03/10 13:51:53 by tide.oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-//stream_line genera el stash y llama funciones
-void    stream_lines(char **stash, char *temp, ssize_t bytes)
-{
-    if (!*stash)
-	{
-		*stash = malloc(bytes + 1);
-		if (!*stash)
-			return ;
 
-		strcpy(*stash, temp);
-	}
-	else
-	{
-		stash_len = strlen(*stash);
-		nstash = malloc(stash_len + bytes + 1);
-		if (!nstash)
-			return ;
-		memcpy(nstash, *stash, stash_len);
-		memcpy(nstash + stash_len, temp, bytes);
-		nstash[stash_len + bytes] = '\0';
-		free(*stash);
-		*stash = nstash;
-	}
-}
-
-void    is_line(char *stash, size_t stash_size, char *line)
+//Funciones manejar strings
+char    *ft_strcpy(char *dst, const char *src)
 {
     size_t  i;
 
     i = 0;
-    while (i < stash_size && stash[i]) //revisar comportamiento cuanto es fin de línea
+    while (src[i])
     {
-        if (stash[i] == '\n' || bytes_read == 0)
-        {
-            extract_line(stash, line, stash_size, i);
-            break ;
-        }
+        dst[i] = src[i];
         i++;
     }
+    dst[i] = '\0';
+    return (dst);
 }
 
-char *extract_line(char **stash, char **line, size_t stash_size, size_t line_size)
+char	*ft_strncpy(char *dst, const char *src, size_t n)
 {
-    char    *temp;
-    size_t  rest_len;
+	size_t  i;
 
-    rest_len = stash_size - line_size;
-    *line = malloc(sizeof(char) * (line_size + 1));
-    if (!*line)
-        return ;
-    strlcpy(*line, *stash, line_size + 1);
-    (*line)[line_size] = '\0';
-    temp = malloc(sizeof(char) * (rest_len + 1));
-    if (!temp)
-        return ;
-    memcpy(temp, (*stash + line_size), rest_len);
-    temp[rest_len] = '\0';
-    free(*stash);
-    *stash = temp;
-    return (*line);
-}
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	const unsigned char	*tsrc;
-	unsigned char		*tdest;
-	size_t				pos;
-
-	tdest = (unsigned char *)dest;
-	tsrc = (const unsigned char *)src;
-	pos = 0;
-	if (n == 0 || dest == src)
-		return (dest);
-	while (pos < n)
+	i = 0;
+	while (i < n && src[i])
 	{
-		tdest[pos] = tsrc[pos];
-		pos++;
+		dst[i] = src[i];
+		i++;
 	}
-	return (dest);
+	dst[i] = '\0';
+	return (dst);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dsize)
+char    *ft_strncat(char *dst, const char *src, size_t n)
 {
-	size_t	src_len;
+    size_t  dst_len;
+    size_t  i;
 
-	src_len = ft_strlen(src);
-	if (dsize > 0)
+    dst_len = ft_strlen(dst);
+    i = 0;
+    while (i < n && src[i])
+    {
+        dst[dst_len + i] = src[i];
+        i++;
+    }
+    dst[dst_len + i] = '\0';
+    return (dst);
+}
+
+char	*ft_strchr(char *s, int c)
+{
+	size_t  i;
+
+	i = 0;
+	while (s[i])
 	{
-		while (dsize > 1 && *src)
-		{
-			*dst++ = *src++;
-			dsize--;
-		}
-		*dst = 0;
+		if (s[i] == (char)c)
+			return (&s[i]);
+		i++;
 	}
-	return (src_len);
+	if (c == '\0')
+		return (&s[i]);
+	return (NULL);
 }
 
-char    *ft_realloc(char **stash, size_t stash_size, size_t stash_new)
+size_t	ft_strlen(const char *s)
 {
-    char    *temp;
+	size_t	len;
 
-    temp = malloc(stash_new + 1);
-    if(!temp)
-        return (NULL);
-    ft_memcpy(new, *stash, stash_new);
-    free(*stash);
-    *stash = temp;
-    return (temp);
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
+}
+//Función para liberar memoria y asignar nueva memoria al stash
+void    ft_restash(char **stash, size_t size_new)
+{
+	char	*temp;
+	int		i;
+
+	i = 0;
+	temp = malloc(size_new + 1);
+	if(!temp)
+		return ;
+	while (i < size_new)
+	{
+		temp[i] = (*stash)[i];
+		i++;
+	}
+	temp[i] = '\0';
+	free(*stash);
+	*stash = temp;
+}
+
+//Funciones para comprobar y construir líneas
+char    *stream_stash(char **stash, char *read_buffer, ssize_t bytes)
+{
+	char	*temp;
+
+	if (*stash == NULL)
+	{
+		*stash = malloc(bytes + 1);
+		if (!*stash)
+			return (NULL);
+		ft_strcpy(*stash, read_buffer);
+		(*stash)[bytes] = '\0';
+	}
+	else
+	{
+		temp = malloc(ft_strlen(*stash) + bytes + 1);
+		if (!temp)
+			return (NULL);
+		ft_strcpy(temp, *stash);
+		ft_strncat(temp, read_buffer, bytes);
+		free(*stash);
+		*stash = temp;
+	}
+	return (*stash);
+}
+
+char	*ft_extract_line(char **stash, char *line, size_t stash_size)
+{
+	size_t	line_size;
+	char	*temp;
+
+	if (!ft_strchr(*stash, '\n'))
+	{
+		line = malloc(stash_size + 1);
+		if (!line)
+			return (NULL);
+		ft_strcpy(line, *stash);
+	}
+	else
+	{
+		line_size = ((ft_strchr(*stash, '\n') - *stash) + 1);
+		line = malloc(line_size + 1);
+		if (!line)
+			return (NULL);
+		ft_strncpy(line, *stash, (line_size + 1));
+		temp = malloc((stash_size - line_size) + 1);
+		if (!temp)
+			return (NULL);
+		ft_strcpy(temp, (*stash + line_size));
+		free(*stash);
+		*stash = temp;
+	}
+	return (line);
 }
