@@ -86,7 +86,7 @@ size_t	ft_strlen(const char *s)
 void    ft_restash(char **stash, size_t size_new)
 {
 	char	*temp;
-	int		i;
+	size_t		i;
 
 	i = 0;
 	temp = malloc(size_new + 1);
@@ -139,6 +139,8 @@ char	*ft_extract_line(char **stash, char *line, size_t stash_size)
 		if (!line)
 			return (NULL);
 		ft_strcpy(line, *stash);
+		free(*stash);
+		*stash = NULL;
 	}
 	else
 	{
