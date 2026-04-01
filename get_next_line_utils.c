@@ -1,35 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tide.oli <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tide-oli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/10 13:51:53 by tide.oli          #+#    #+#             */
-/*   Updated: 2026/03/10 13:51:53 by tide.oli         ###   ########.fr       */
+/*   Created: 2026/04/01 17:19:35 by tide-oli          #+#    #+#             */
+/*   Updated: 2026/04/01 17:19:43 by tide-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 //Funciones manejar strings
-char    *ft_strcpy(char *dst, const char *src)
+char	*ft_strcpy(char *dst, const char *src)
 {
-    size_t  i;
+	size_t	i;
 
-    i = 0;
-    while (src[i])
-    {
-        dst[i] = src[i];
-        i++;
-    }
-    dst[i] = '\0';
-    return (dst);
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	dst[i] = '\0';
+	return (dst);
 }
 
 char	*ft_strncpy(char *dst, const char *src, size_t n)
 {
-	size_t  i;
+	size_t	i;
 
 	i = 0;
 	while (i < n && src[i])
@@ -41,25 +41,25 @@ char	*ft_strncpy(char *dst, const char *src, size_t n)
 	return (dst);
 }
 
-char    *ft_strncat(char *dst, const char *src, size_t n)
+char	*ft_strncat(char *dst, const char *src, size_t n)
 {
-    size_t  dst_len;
-    size_t  i;
+	size_t	dst_len;
+	size_t	i;
 
-    dst_len = ft_strlen(dst);
-    i = 0;
-    while (i < n && src[i])
-    {
-        dst[dst_len + i] = src[i];
-        i++;
-    }
-    dst[dst_len + i] = '\0';
-    return (dst);
+	dst_len = ft_strlen(dst);
+	i = 0;
+	while (i < n && src[i])
+	{
+		dst[dst_len + i] = src[i];
+		i++;
+	}
+	dst[dst_len + i] = '\0';
+	return (dst);
 }
 
 char	*ft_strchr(char *s, int c)
 {
-	size_t  i;
+	size_t	i;
 
 	i = 0;
 	while (s[i])
@@ -82,15 +82,16 @@ size_t	ft_strlen(const char *s)
 		len++;
 	return (len);
 }
+
 //Función para liberar memoria y asignar nueva memoria al stash
-void    ft_restash(char **stash, size_t size_new)
+void	ft_restash(char **stash, size_t size_new)
 {
 	char	*temp;
-	size_t		i;
+	size_t	i;
 
 	i = 0;
 	temp = malloc(size_new + 1);
-	if(!temp)
+	if (!temp)
 		return ;
 	while (i < size_new)
 	{
@@ -103,7 +104,7 @@ void    ft_restash(char **stash, size_t size_new)
 }
 
 //Funciones para comprobar y construir líneas
-char    *stream_stash(char **stash, char *read_buffer, ssize_t bytes)
+char	*stream_stash(char **stash, char *read_buffer, ssize_t bytes)
 {
 	char	*temp;
 
