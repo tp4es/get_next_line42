@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tide-oli <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/01 17:19:35 by tide-oli          #+#    #+#             */
-/*   Updated: 2026/04/01 17:19:43 by tide-oli         ###   ########.fr       */
+/*   Created: 2026/04/02 14:55:23 by tide-oli          #+#    #+#             */
+/*   Updated: 2026/04/02 14:55:24 by tide-oli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,81 +81,4 @@ size_t	ft_strlen(const char *s)
 	while (s[len])
 		len++;
 	return (len);
-}
-
-//Función para liberar memoria y asignar nueva memoria al stash
-void	ft_restash(char **stash, size_t size_new)
-{
-	char	*temp;
-	size_t	i;
-
-	i = 0;
-	temp = malloc(size_new + 1);
-	if (!temp)
-		return ;
-	while (i < size_new)
-	{
-		temp[i] = (*stash)[i];
-		i++;
-	}
-	temp[i] = '\0';
-	free(*stash);
-	*stash = temp;
-}
-
-//Funciones para comprobar y construir líneas
-char	*stream_stash(char **stash, char *read_buffer, ssize_t bytes)
-{
-	char	*temp;
-
-	if (*stash == NULL)
-	{
-		*stash = malloc(bytes + 1);
-		if (!*stash)
-			return (NULL);
-		ft_strcpy(*stash, read_buffer);
-		(*stash)[bytes] = '\0';
-	}
-	else
-	{
-		temp = malloc(ft_strlen(*stash) + bytes + 1);
-		if (!temp)
-			return (NULL);
-		ft_strcpy(temp, *stash);
-		ft_strncat(temp, read_buffer, bytes);
-		free(*stash);
-		*stash = temp;
-	}
-	return (*stash);
-}
-
-char	*ft_extract_line(char **stash, char *line, size_t stash_size)
-{
-	size_t	line_size;
-	char	*temp;
-
-	if (!ft_strchr(*stash, '\n'))
-	{
-		line = malloc(stash_size + 1);
-		if (!line)
-			return (NULL);
-		ft_strcpy(line, *stash);
-		free(*stash);
-		*stash = NULL;
-	}
-	else
-	{
-		line_size = ((ft_strchr(*stash, '\n') - *stash) + 1);
-		line = malloc(line_size + 1);
-		if (!line)
-			return (NULL);
-		ft_strncpy(line, *stash, (line_size + 1));
-		temp = malloc((stash_size - line_size) + 1);
-		if (!temp)
-			return (NULL);
-		ft_strcpy(temp, (*stash + line_size));
-		free(*stash);
-		*stash = temp;
-	}
-	return (line);
 }
