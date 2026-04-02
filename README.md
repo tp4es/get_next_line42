@@ -172,9 +172,3 @@ After completing this project, you should understand:
 ## 🚀 Author
 
 - 42 Student – [tp4es](https://github.com/tp4es)
-
----
-
-## 📜 License
-
-This project is part of the 42 curriculum and follows its academic guidelines.
